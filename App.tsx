@@ -9,17 +9,6 @@ import { Login, Register, ComingSoon, NotFound } from './components/AuthPages';
 
 const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<Page>(Page.HOME_1);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-
-  // Wrapper for page navigation with smooth transition
-  const navigateToPage = (page: Page) => {
-    if (page === currentPage) return;
-    setIsTransitioning(true);
-    setTimeout(() => {
-      setCurrentPage(page);
-      setIsTransitioning(false);
-    }, 150);
-  };
 
   // --- Hash Routing Logic for GitHub Pages Compatibility ---
   
@@ -30,7 +19,7 @@ const App: React.FC = () => {
       
       // If no hash, default to Home
       if (!hash) {
-        if (currentPage !== Page.HOME_1) navigateToPage(Page.HOME_1);
+        if (currentPage !== Page.HOME_1) setCurrentPage(Page.HOME_1);
         return;
       }
 
@@ -38,10 +27,10 @@ const App: React.FC = () => {
       const targetPage = Object.values(Page).find(p => p === hash) as Page | undefined;
       
       if (targetPage) {
-        if (currentPage !== targetPage) navigateToPage(targetPage);
+        if (currentPage !== targetPage) setCurrentPage(targetPage);
       } else {
         // If hash is invalid, show 404
-        if (currentPage !== Page.NOT_FOUND) navigateToPage(Page.NOT_FOUND);
+        if (currentPage !== Page.NOT_FOUND) setCurrentPage(Page.NOT_FOUND);
       }
     };
 
@@ -61,8 +50,8 @@ const App: React.FC = () => {
       window.location.hash = targetHash;
     }
     
-    // Smooth scroll to top on navigation
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Scroll to top on navigation
+    window.scrollTo(0, 0);
   }, [currentPage]);
 
 
@@ -71,25 +60,25 @@ const App: React.FC = () => {
     switch (currentPage) {
       // Public Pages
       case Page.HOME_1:
-        return <Home1 setPage={navigateToPage} />;
+        return <Home1 setPage={setCurrentPage} />;
       case Page.HOME_2:
-        return <Home2 setPage={navigateToPage} />;
+        return <Home2 setPage={setCurrentPage} />;
       case Page.ABOUT:
-        return <About setPage={navigateToPage} />;
+        return <About setPage={setCurrentPage} />;
       case Page.SERVICES:
-        return <Services setPage={navigateToPage} />;
+        return <Services setPage={setCurrentPage} />;
       case Page.SERVICE_DETAILS:
-        return <ServiceDetails setPage={navigateToPage} />;
+        return <ServiceDetails setPage={setCurrentPage} />;
       case Page.BLOG:
-        return <Blog setPage={navigateToPage} />;
+        return <Blog setPage={setCurrentPage} />;
       case Page.BLOG_DETAILS:
-        return <BlogDetails setPage={navigateToPage} />;
+        return <BlogDetails setPage={setCurrentPage} />;
       case Page.CONTACT:
         return <Contact />;
       case Page.PRICING:
         return <Pricing />;
       default:
-        return <NotFound setPage={navigateToPage} />;
+        return <NotFound setPage={setCurrentPage} />;
     }
   };
 
@@ -106,47 +95,30 @@ const App: React.FC = () => {
     Page.COMING_SOON
   ].includes(currentPage);
 
-  // Page transition wrapper
-  const PageWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-    <div 
-      className={`transition-opacity duration-200 ${isTransitioning ? 'opacity-0' : 'opacity-100'}`}
-    >
-      {children}
-    </div>
-  );
-
   // Render Auth Pages (No Layout)
   if (isAuthPage) {
-    return (
-      <PageWrapper>
-        {currentPage === Page.LOGIN && <Login setPage={navigateToPage} />}
-        {currentPage === Page.REGISTER && <Register setPage={navigateToPage} />}
-        {currentPage === Page.COMING_SOON && <ComingSoon setPage={navigateToPage} />}
-        {currentPage === Page.NOT_FOUND && <NotFound setPage={navigateToPage} />}
-      </PageWrapper>
-    );
+    if (currentPage === Page.LOGIN) return <Login setPage={setCurrentPage} />;
+    if (currentPage === Page.REGISTER) return <Register setPage={setCurrentPage} />;
+    if (currentPage === Page.COMING_SOON) return <ComingSoon setPage={setCurrentPage} />;
+    return <NotFound setPage={setCurrentPage} />;
   }
 
   // Render Admin Layout
   if (isAdminPage) {
     return (
-      <PageWrapper>
-        <AdminLayout currentPage={currentPage} setPage={navigateToPage}>
-          {currentPage === Page.ADMIN_DASHBOARD && <Dashboard />}
-          {currentPage === Page.ADMIN_USERS && <UsersList />}
-          {currentPage === Page.ADMIN_MESSAGES && <ComingSoon setPage={navigateToPage} />}
-        </AdminLayout>
-      </PageWrapper>
+      <AdminLayout currentPage={currentPage} setPage={setCurrentPage}>
+        {currentPage === Page.ADMIN_DASHBOARD && <Dashboard />}
+        {currentPage === Page.ADMIN_USERS && <UsersList />}
+        {currentPage === Page.ADMIN_MESSAGES && <ComingSoon setPage={setCurrentPage} />}
+      </AdminLayout>
     );
   }
 
   // Render Public Layout (Default)
   return (
-    <PageWrapper>
-      <PublicLayout currentPage={currentPage} setPage={navigateToPage}>
-        {renderPage()}
-      </PublicLayout>
-    </PageWrapper>
+    <PublicLayout currentPage={currentPage} setPage={setCurrentPage}>
+      {renderPage()}
+    </PublicLayout>
   );
 };
 
