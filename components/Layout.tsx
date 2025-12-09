@@ -26,83 +26,113 @@ const Header: React.FC<{ setPage: (page: Page) => void; currentPage: Page }> = (
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-metallic-900/80 backdrop-blur-md border-b border-white/10 transition-all duration-300">
-      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-        {/* Logo */}
-        <div 
-          onClick={() => setPage(Page.HOME_1)}
-          className="flex items-center gap-2 cursor-pointer group"
-        >
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-metallic-900 flex items-center justify-center border border-white/20 group-hover:border-blue-400 transition-colors">
-            <Briefcase className="text-white w-5 h-5" />
+    <>
+      <header className="fixed top-0 left-0 right-0 z-50 bg-metallic-900/80 backdrop-blur-md border-b border-white/10 transition-all duration-300">
+        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+          {/* Logo */}
+          <div 
+            onClick={() => setPage(Page.HOME_1)}
+            className="flex items-center gap-2 cursor-pointer group"
+          >
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-metallic-900 flex items-center justify-center border border-white/20 group-hover:border-blue-400 transition-colors">
+              <Briefcase className="text-white w-5 h-5" />
+            </div>
+            <span className="text-2xl font-serif font-bold text-white tracking-wide">LUMINA</span>
           </div>
-          <span className="text-2xl font-serif font-bold text-white tracking-wide">LUMINA</span>
-        </div>
 
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-8">
-          {navItems.map((item) => (
-            <button
-              key={item.label}
-              onClick={() => setPage(item.page)}
-              className={`text-sm font-medium tracking-wider transition-colors duration-200 ${
-                currentPage === item.page ? 'text-blue-400' : 'text-slate-300 hover:text-white'
-              }`}
+          {/* Desktop Nav - visible at 1024px+ */}
+          <nav className="hidden lg:flex items-center gap-8">
+            {navItems.map((item) => (
+              <button
+                key={item.label}
+                onClick={() => setPage(item.page)}
+                className={`text-sm font-medium tracking-wider transition-colors duration-200 ${
+                  currentPage === item.page ? 'text-blue-400' : 'text-slate-300 hover:text-white'
+                }`}
+              >
+                {item.label.toUpperCase()}
+              </button>
+            ))}
+          </nav>
+
+          {/* Auth Buttons - visible at 1024px+ */}
+          <div className="hidden lg:flex items-center gap-4">
+            <button 
+              onClick={() => setPage(Page.LOGIN)}
+              className="text-slate-300 hover:text-white font-medium text-sm transition-colors"
             >
-              {item.label.toUpperCase()}
+              Log In
             </button>
-          ))}
-        </nav>
+            <button 
+              onClick={() => setPage(Page.ADMIN_DASHBOARD)}
+              className="px-5 py-2.5 rounded-lg bg-white text-metallic-900 font-semibold text-sm hover:bg-blue-50 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
+            >
+              Admin Demo
+            </button>
+          </div>
 
-        {/* Auth Buttons */}
-        <div className="hidden md:flex items-center gap-4">
+          {/* Mobile Toggle - visible below 1024px */}
           <button 
-            onClick={() => setPage(Page.LOGIN)}
-            className="text-slate-300 hover:text-white font-medium text-sm"
+            className="lg:hidden text-white z-50 p-2"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
-            Log In
-          </button>
-          <button 
-            onClick={() => setPage(Page.ADMIN_DASHBOARD)}
-            className="px-5 py-2.5 rounded-lg bg-white text-metallic-900 font-semibold text-sm hover:bg-blue-50 transition-all hover:shadow-[0_0_15px_rgba(255,255,255,0.3)]"
-          >
-            Admin Demo
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
+      </header>
 
-        {/* Mobile Toggle */}
+      {/* Mobile Menu Backdrop */}
+      <div 
+        className={`fixed inset-0 bg-black/50 z-30 transition-opacity duration-300 lg:hidden
+          ${isMobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'}`}
+        onClick={() => setIsMobileMenuOpen(false)}
+      />
+
+      {/* Mobile Menu Panel - 45% width, 60% height, slides from right */}
+      <div className={`fixed top-0 right-0 w-[45%] min-w-[280px] h-[60%] 
+        bg-metallic-900 z-40 lg:hidden
+        flex flex-col items-center justify-center gap-6
+        rounded-bl-2xl shadow-2xl border-l border-b border-white/10
+        transition-transform duration-300 ease-out
+        ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+        
+        {navItems.map((item) => (
+          <button
+            key={item.label}
+            onClick={() => {
+              setPage(item.page);
+              setIsMobileMenuOpen(false);
+            }}
+            className={`text-lg font-medium tracking-wider transition-colors duration-200 ${
+              currentPage === item.page ? 'text-blue-400' : 'text-slate-300 hover:text-white'
+            }`}
+          >
+            {item.label}
+          </button>
+        ))}
+        
+        <div className="w-3/4 h-px bg-white/10 my-2"></div>
+        
         <button 
-          className="md:hidden text-white"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          onClick={() => {
+            setPage(Page.LOGIN);
+            setIsMobileMenuOpen(false);
+          }}
+          className="text-slate-300 hover:text-white font-medium transition-colors"
         >
-          {isMobileMenuOpen ? <X /> : <Menu />}
+          Log In
+        </button>
+        <button 
+          onClick={() => {
+            setPage(Page.ADMIN_DASHBOARD);
+            setIsMobileMenuOpen(false);
+          }}
+          className="px-6 py-2.5 rounded-lg bg-white text-metallic-900 font-semibold text-sm hover:bg-blue-50 hover:shadow-lg transition-all duration-300"
+        >
+          Admin Demo
         </button>
       </div>
-
-      {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden absolute top-20 left-0 w-full bg-metallic-900 border-b border-white/10 p-6 flex flex-col gap-4 animate-slide-up shadow-2xl">
-          {navItems.map((item) => (
-            <button
-              key={item.label}
-              onClick={() => {
-                setPage(item.page);
-                setIsMobileMenuOpen(false);
-              }}
-              className="text-left text-slate-300 hover:text-white py-2 text-lg font-medium border-b border-white/5"
-            >
-              {item.label}
-            </button>
-          ))}
-          <button 
-            onClick={() => setPage(Page.LOGIN)}
-            className="w-full mt-4 py-3 rounded bg-blue-600 text-white font-semibold"
-          >
-            Member Login
-          </button>
-        </div>
-      )}
-    </header>
+    </>
   );
 };
 

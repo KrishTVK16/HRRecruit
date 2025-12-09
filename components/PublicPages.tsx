@@ -51,10 +51,10 @@ export const Home1 = ({ setPage }: { setPage: (p: Page) => void }) => {
               We bridge the gap between world-class talent and industry-leading organizations through data-driven precision and a luxury human-centric approach.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <button onClick={() => setPage(Page.CONTACT)} className="px-8 py-4 rounded-xl bg-white text-metallic-900 font-bold hover:bg-blue-50 transition-all hover:scale-105 shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+              <button onClick={() => setPage(Page.CONTACT)} className="px-8 py-4 rounded-xl bg-white text-metallic-900 font-bold hover:bg-blue-50 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.2)]">
                 Start Hiring
               </button>
-              <button onClick={() => setPage(Page.SERVICES)} className="px-8 py-4 rounded-xl bg-transparent border border-white/20 text-white font-bold hover:border-white transition-all hover:bg-white/5">
+              <button onClick={() => setPage(Page.SERVICES)} className="px-8 py-4 rounded-xl bg-transparent border border-white/20 text-white font-bold hover:border-white hover:shadow-lg hover:-translate-y-1 transition-all duration-300 hover:bg-white/5">
                 Explore Services
               </button>
             </div>
@@ -112,8 +112,8 @@ export const Home1 = ({ setPage }: { setPage: (p: Page) => void }) => {
                 </div>
                 <h3 className="text-xl font-bold text-white mb-4">{s.title}</h3>
                 <p className="text-slate-400 leading-relaxed mb-6">{s.desc}</p>
-                <button onClick={() => setPage(Page.SERVICE_DETAILS)} className="flex items-center text-blue-400 text-sm font-bold uppercase tracking-wider hover:text-white transition-colors">
-                  Learn More <ArrowRight className="w-4 h-4 ml-2" />
+                <button onClick={() => setPage(Page.SERVICE_DETAILS)} className="group flex items-center gap-2 text-blue-400 text-sm font-bold uppercase tracking-wider hover:text-white hover:gap-3 transition-all duration-300">
+                  Learn More <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </button>
               </Card>
             ))}
@@ -150,7 +150,7 @@ export const Home2 = ({ setPage }: { setPage: (p: Page) => void }) => {
             We find the 1% of engineering and product talent that traditional agencies miss.
           </p>
           <div className="flex justify-center gap-6">
-            <button onClick={() => setPage(Page.CONTACT)} className="px-10 py-4 bg-blue-600 text-white rounded-full font-bold hover:bg-blue-500 transition-all shadow-lg shadow-blue-600/20">
+            <button onClick={() => setPage(Page.CONTACT)} className="px-10 py-4 bg-blue-600 text-white rounded-full font-bold hover:bg-blue-500 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 shadow-lg shadow-blue-600/20">
               Get a Quote
             </button>
           </div>
@@ -257,7 +257,7 @@ export const Services = ({ setPage }: { setPage: (p: Page) => void }) => {
                   </div>
                   <h3 className="text-2xl font-bold text-white mb-3">{s.title}</h3>
                   <p className="text-slate-400 mb-8">{s.description}</p>
-                  <button onClick={() => setPage(Page.SERVICE_DETAILS)} className="w-full py-3 rounded border border-white/10 text-white font-medium hover:bg-white hover:text-slate-900 transition-all">
+                  <button onClick={() => setPage(Page.SERVICE_DETAILS)} className="w-full py-3 rounded border border-white/10 text-white font-medium hover:bg-white hover:text-slate-900 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
                     View Details
                   </button>
                </Card>
@@ -308,7 +308,7 @@ export const ServiceDetails = ({ setPage }: { setPage: (p: Page) => void }) => (
        <div className="bg-gradient-to-r from-blue-900 to-slate-900 p-12 rounded-2xl border border-white/10 text-center relative overflow-hidden">
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
           <h3 className="text-3xl font-serif font-bold text-white mb-6 relative z-10">Ready to find your next leader?</h3>
-          <button onClick={() => setPage(Page.CONTACT)} className="px-8 py-4 bg-white text-slate-900 font-bold rounded-xl hover:scale-105 transition-transform relative z-10 shadow-lg">
+          <button onClick={() => setPage(Page.CONTACT)} className="px-8 py-4 bg-white text-slate-900 font-bold rounded-xl hover:-translate-y-1 hover:shadow-xl transition-all duration-300 relative z-10 shadow-lg">
              Schedule Consultation
           </button>
        </div>
@@ -349,7 +349,9 @@ export const Blog = ({ setPage }: { setPage: (p: Page) => void }) => {
 
 export const BlogDetails = ({ setPage }: { setPage: (p: Page) => void }) => (
   <div className="pt-20 pb-32 max-w-3xl mx-auto px-6">
-     <button onClick={() => setPage(Page.BLOG)} className="text-blue-400 mb-8 flex items-center hover:underline">← Back to Blog</button>
+     <button onClick={() => setPage(Page.BLOG)} className="group text-blue-400 mb-8 flex items-center gap-2 hover:text-white transition-colors duration-300">
+       <span className="group-hover:-translate-x-1 transition-transform">←</span> Back to Blog
+     </button>
      
      <div className="mb-10 rounded-2xl overflow-hidden shadow-2xl">
         <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=1200" alt="Blog Hero" className="w-full h-auto" />
@@ -440,7 +442,7 @@ export const Contact = () => (
                <label className="text-sm font-bold text-slate-400">Message</label>
                <textarea rows={5} className="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-white focus:border-blue-500 focus:outline-none transition-colors"></textarea>
             </div>
-            <button type="button" className="w-full py-4 bg-gradient-to-r from-blue-600 to-blue-500 rounded-lg text-white font-bold hover:shadow-lg transition-all">
+            <button type="button" className="w-full py-4 bg-gradient-to-r from-blue-600 to-blue-500 rounded-lg text-white font-bold hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300">
                Send Message
             </button>
          </form>
@@ -470,7 +472,7 @@ export const Pricing = () => (
                      </li>
                   ))}
                </ul>
-               <button className={`w-full py-3 rounded-lg font-bold transition-all ${plan.active ? 'bg-blue-600 text-white hover:bg-blue-500' : 'bg-white/5 text-white hover:bg-white/10'}`}>
+               <button className={`w-full py-3 rounded-lg font-bold transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 ${plan.active ? 'bg-blue-600 text-white hover:bg-blue-500' : 'bg-white/5 text-white hover:bg-white/10'}`}>
                   Choose Plan
                </button>
             </div>
